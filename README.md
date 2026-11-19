@@ -1,6 +1,6 @@
 # subs-merge-template
 
-把多个订阅合并成一份带分流规则的 OpenClash / FlClash 配置，靠 GitHub Actions 每 6 小时自动更新，订阅链接从此不用手动换。
+把多个订阅合并成一份带分流规则的 OpenClash / FlClash 配置，靠 GitHub Actions 每天自动更新，订阅链接从此不用手动换。
 
 📖 **第一次部署请照着 [部署说明.md](部署说明.md) 做，5 个阶段、带故障排查表。**
 
