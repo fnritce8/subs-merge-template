@@ -1,0 +1,961 @@
+{
+ "mixed-port": 7890,
+ "allow-lan": true,
+ "bind-address": "*",
+ "mode": "rule",
+ "log-level": "info",
+ "ipv6": true,
+ "unified-delay": true,
+ "tcp-concurrent": true,
+ "dns": {
+  "enable": true,
+  "ipv6": false,
+  "enhanced-mode": "fake-ip",
+  "fake-ip-range": "198.18.0.1/16",
+  "fake-ip-filter": [
+   "*.lan",
+   "*.local",
+   "*.msftconnecttest.com",
+   "*.msftncsi.com",
+   "localhost.ptlogin2.qq.com",
+   "time.*.com",
+   "ntp.*.com",
+   "+.pool.ntp.org"
+  ],
+  "default-nameserver": [
+   "223.5.5.5",
+   "119.29.29.29"
+  ],
+  "nameserver": [
+   "https://dns.alidns.com/dns-query",
+   "https://doh.pub/dns-query"
+  ],
+  "proxy-server-nameserver": [
+   "https://dns.alidns.com/dns-query",
+   "https://doh.pub/dns-query"
+  ]
+ },
+ "rule-providers": {
+  "AI": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/liandu2024/clash/refs/heads/main/list/AI.list",
+   "interval": 86400,
+   "path": "./ruleset/AI.list"
+  },
+  "MetaAI": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/liandu2024/clash/refs/heads/main/list/MetaAi.list",
+   "interval": 86400,
+   "path": "./ruleset/MetaAI.list"
+  },
+  "Perplexity": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/liandu2024/clash/refs/heads/main/list/Perplexity.list",
+   "interval": 86400,
+   "path": "./ruleset/Perplexity.list"
+  },
+  "GitHub": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/GitHub/GitHub.list",
+   "interval": 86400,
+   "path": "./ruleset/GitHub.list"
+  },
+  "TikTok": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/TikTok/TikTok.list",
+   "interval": 86400,
+   "path": "./ruleset/TikTok.list"
+  },
+  "Telegram": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.list",
+   "interval": 86400,
+   "path": "./ruleset/Telegram.list"
+  },
+  "Twitter": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Twitter/Twitter.list",
+   "interval": 86400,
+   "path": "./ruleset/Twitter.list"
+  },
+  "WhatsApp": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Whatsapp/Whatsapp.list",
+   "interval": 86400,
+   "path": "./ruleset/WhatsApp.list"
+  },
+  "Facebook": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Facebook/Facebook.list",
+   "interval": 86400,
+   "path": "./ruleset/Facebook.list"
+  },
+  "Amazon": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Amazon/Amazon.list",
+   "interval": 86400,
+   "path": "./ruleset/Amazon.list"
+  },
+  "Apple": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Apple/Apple.list",
+   "interval": 86400,
+   "path": "./ruleset/Apple.list"
+  },
+  "Microsoft": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Microsoft/Microsoft.list",
+   "interval": 86400,
+   "path": "./ruleset/Microsoft.list"
+  },
+  "Google": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Google/Google.list",
+   "interval": 86400,
+   "path": "./ruleset/Google.list"
+  },
+  "Steam": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Steam/Steam.list",
+   "interval": 86400,
+   "path": "./ruleset/Steam.list"
+  },
+  "Game1": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Epic/Epic.list",
+   "interval": 86400,
+   "path": "./ruleset/Game1.list"
+  },
+  "Game2": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/EA/EA.list",
+   "interval": 86400,
+   "path": "./ruleset/Game2.list"
+  },
+  "Game3": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Blizzard/Blizzard.list",
+   "interval": 86400,
+   "path": "./ruleset/Game3.list"
+  },
+  "Game4": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/UBI/UBI.list",
+   "interval": 86400,
+   "path": "./ruleset/Game4.list"
+  },
+  "Game5": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Sony/Sony.list",
+   "interval": 86400,
+   "path": "./ruleset/Game5.list"
+  },
+  "Game6": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Nintendo/Nintendo.list",
+   "interval": 86400,
+   "path": "./ruleset/Game6.list"
+  },
+  "YouTube1": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/liandu2024/clash/refs/heads/main/list/YouTube.list",
+   "interval": 86400,
+   "path": "./ruleset/YouTube1.list"
+  },
+  "YouTube2": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube.list",
+   "interval": 86400,
+   "path": "./ruleset/YouTube2.list"
+  },
+  "Disney": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Disney/Disney.list",
+   "interval": 86400,
+   "path": "./ruleset/Disney.list"
+  },
+  "Netflix": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Netflix/Netflix.list",
+   "interval": 86400,
+   "path": "./ruleset/Netflix.list"
+  },
+  "HBO": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/HBO/HBO.list",
+   "interval": 86400,
+   "path": "./ruleset/HBO.list"
+  },
+  "Spotify": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Spotify/Spotify.list",
+   "interval": 86400,
+   "path": "./ruleset/Spotify.list"
+  },
+  "Crypto1": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/OKX/OKX.list",
+   "interval": 86400,
+   "path": "./ruleset/Crypto1.list"
+  },
+  "Crypto2": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/v2fly/domain-list-community/refs/heads/master/data/bybit",
+   "interval": 86400,
+   "path": "./ruleset/Crypto2.list"
+  },
+  "Crypto3": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/liandu2024/clash/refs/heads/main/list/xnb.list",
+   "interval": 86400,
+   "path": "./ruleset/Crypto3.list"
+  },
+  "Check": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/liandu2024/clash/refs/heads/main/list/Check.list",
+   "interval": 86400,
+   "path": "./ruleset/Check.list"
+  },
+  "Proxy": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/liandu2024/clash/refs/heads/main/list/Proxy.list",
+   "interval": 86400,
+   "path": "./ruleset/Proxy.list"
+  },
+  "Global": {
+   "type": "http",
+   "behavior": "classical",
+   "format": "text",
+   "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Global/Global.list",
+   "interval": 86400,
+   "path": "./ruleset/Global.list"
+  }
+ },
+ "rules": [
+  "RULE-SET,AI,✨ AI",
+  "RULE-SET,MetaAI,✨ Meta AI",
+  "RULE-SET,Perplexity,✨ Perplexity",
+  "RULE-SET,GitHub,📘 GitHub",
+  "RULE-SET,TikTok,🪂 TikTok",
+  "RULE-SET,Telegram,🙋 Telegram",
+  "RULE-SET,Twitter,🕊️ Twitter(X)",
+  "RULE-SET,WhatsApp,💁 WhatsApp",
+  "RULE-SET,Facebook,🗣️ Facebook",
+  "RULE-SET,Amazon,🌳 Amazon",
+  "RULE-SET,Apple,🍎 Apple",
+  "RULE-SET,Microsoft,Ⓜ️ Microsoft",
+  "RULE-SET,Google,🔍 Google",
+  "RULE-SET,Steam,🎮 Steam",
+  "RULE-SET,Game1,🕹️ Game",
+  "RULE-SET,Game2,🕹️ Game",
+  "RULE-SET,Game3,🕹️ Game",
+  "RULE-SET,Game4,🕹️ Game",
+  "RULE-SET,Game5,🕹️ Game",
+  "RULE-SET,Game6,🕹️ Game",
+  "RULE-SET,YouTube1,🎞️ YouTube",
+  "RULE-SET,YouTube2,🎞️ YouTube",
+  "RULE-SET,Disney,📺 Disney",
+  "RULE-SET,Netflix,🎥 Netflix",
+  "RULE-SET,HBO,🎬 HBO",
+  "RULE-SET,Spotify,🎵 Spotify",
+  "RULE-SET,Crypto1,👌 虚拟币",
+  "RULE-SET,Crypto2,👌 虚拟币",
+  "RULE-SET,Crypto3,👌 虚拟币",
+  "RULE-SET,Check,⏱️ 检测",
+  "RULE-SET,Proxy,🌍 国外",
+  "RULE-SET,Global,🌍 国外",
+  "MATCH,➡️ 国内"
+ ],
+ "__groups__": [
+  {
+   "def": {
+    "name": "✨ AI",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "✨ Meta AI",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "✨ Perplexity",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "📘 GitHub",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "🪂 TikTok",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "🙋 Telegram",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "🕊️ Twitter(X)",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "💁 WhatsApp",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "🗣️ Facebook",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "🌳 Amazon",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "🍎 Apple",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "Ⓜ️ Microsoft",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "🔍 Google",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "🎮 Steam",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "🕹️ Game",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "🎞️ YouTube",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "📺 Disney",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "🎥 Netflix",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "🎬 HBO",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "🎵 Spotify",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "👌 虚拟币",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "⏱️ 检测",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "🌍 国外",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "➡️ 国内",
+    "type": "select",
+    "proxies": [
+     "所有-手动",
+     "所有-自动",
+     "香港-自动",
+     "台湾-自动",
+     "日本-自动",
+     "新加坡-自动",
+     "韩国-自动",
+     "美国-自动",
+     "其他-自动",
+     "DIRECT",
+     "REJECT"
+    ]
+   },
+   "fill": "static"
+  },
+  {
+   "def": {
+    "name": "所有-手动",
+    "type": "select",
+    "proxies": []
+   },
+   "fill": "all"
+  },
+  {
+   "def": {
+    "name": "所有-自动",
+    "type": "url-test",
+    "proxies": [],
+    "url": "http://www.gstatic.com/generate_204",
+    "interval": 180,
+    "tolerance": 100
+   },
+   "fill": "all"
+  },
+  {
+   "def": {
+    "name": "香港-自动",
+    "type": "url-test",
+    "proxies": [],
+    "url": "http://www.gstatic.com/generate_204",
+    "interval": 180,
+    "tolerance": 100
+   },
+   "fill": "region",
+   "region": "香港-自动"
+  },
+  {
+   "def": {
+    "name": "台湾-自动",
+    "type": "url-test",
+    "proxies": [],
+    "url": "http://www.gstatic.com/generate_204",
+    "interval": 180,
+    "tolerance": 100
+   },
+   "fill": "region",
+   "region": "台湾-自动"
+  },
+  {
+   "def": {
+    "name": "日本-自动",
+    "type": "url-test",
+    "proxies": [],
+    "url": "http://www.gstatic.com/generate_204",
+    "interval": 180,
+    "tolerance": 100
+   },
+   "fill": "region",
+   "region": "日本-自动"
+  },
+  {
+   "def": {
+    "name": "新加坡-自动",
+    "type": "url-test",
+    "proxies": [],
+    "url": "http://www.gstatic.com/generate_204",
+    "interval": 180,
+    "tolerance": 100
+   },
+   "fill": "region",
+   "region": "新加坡-自动"
+  },
+  {
+   "def": {
+    "name": "韩国-自动",
+    "type": "url-test",
+    "proxies": [],
+    "url": "http://www.gstatic.com/generate_204",
+    "interval": 180,
+    "tolerance": 100
+   },
+   "fill": "region",
+   "region": "韩国-自动"
+  },
+  {
+   "def": {
+    "name": "美国-自动",
+    "type": "url-test",
+    "proxies": [],
+    "url": "http://www.gstatic.com/generate_204",
+    "interval": 180,
+    "tolerance": 100
+   },
+   "fill": "region",
+   "region": "美国-自动"
+  },
+  {
+   "def": {
+    "name": "其他-自动",
+    "type": "url-test",
+    "proxies": [],
+    "url": "http://www.gstatic.com/generate_204",
+    "interval": 180,
+    "tolerance": 100
+   },
+   "fill": "region",
+   "region": "其他-自动"
+  },
+  {
+   "def": {
+    "name": "GLOBAL",
+    "type": "select",
+    "proxies": []
+   },
+   "fill": "global",
+   "prefix": [
+    "➡️ 国内",
+    "✨ AI",
+    "✨ Meta AI",
+    "✨ Perplexity",
+    "📘 GitHub",
+    "🪂 TikTok",
+    "🙋 Telegram",
+    "🕊️ Twitter(X)",
+    "💁 WhatsApp",
+    "🗣️ Facebook",
+    "🌳 Amazon",
+    "🍎 Apple",
+    "Ⓜ️ Microsoft",
+    "🔍 Google",
+    "🎮 Steam",
+    "🕹️ Game",
+    "🎞️ YouTube",
+    "📺 Disney",
+    "🎥 Netflix",
+    "🎬 HBO",
+    "🎵 Spotify",
+    "👌 虚拟币",
+    "⏱️ 检测",
+    "🌍 国外",
+    "所有-手动",
+    "所有-自动",
+    "香港-自动",
+    "台湾-自动",
+    "日本-自动",
+    "新加坡-自动",
+    "韩国-自动",
+    "美国-自动",
+    "其他-自动",
+    "__SUB_GROUPS__",
+    "DIRECT"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,60 @@
+name: Update subscriptions
+
+on:
+  schedule:
+    - cron: '17 */6 * * *'   # every 6 hours (UTC)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Fetch and rebuild
+        env:
+          SUBS: ${{ secrets.SUBS }}
+          EXTRA_NODES: ${{ secrets.EXTRA_NODES }}
+          EXTRA_RULES: ${{ secrets.EXTRA_RULES }}
+          EXTRA_LABEL: ${{ vars.EXTRA_LABEL }}
+          MIN_TOTAL_NODES: ${{ vars.MIN_TOTAL_NODES }}
+        run: python3 build.py
+
+      - name: Commit outputs if changed
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add out/ cache/
+          if git diff --cached --quiet; then
+            echo 'No changes.'
+          else
+            git commit -m "Update subscriptions $(date -u '+%Y-%m-%d %H:%M UTC')"
+            git push
+          fi
+
+      # Optional: publish the outputs to a secret Gist. Runs only when both
+      # GIST_TOKEN and GIST_ID secrets are set (see README, private setup).
+      - name: Publish outputs to secret Gist (optional)
+        env:
+          GH_TOKEN: ${{ secrets.GIST_TOKEN }}
+          GIST_ID: ${{ secrets.GIST_ID }}
+        run: |
+          if [ -z "$GH_TOKEN" ] || [ -z "$GIST_ID" ]; then
+            echo 'GIST_TOKEN / GIST_ID not set; skipping Gist publish.'
+            exit 0
+          fi
+          jq -n --rawfile oc out/openclash.yaml --rawfile fl out/flclash.yaml \
+            '{files: {"openclash.yaml": {content: $oc}, "flclash.yaml": {content: $fl}}}' \
+            > /tmp/gist-payload.json
+          gh api -X PATCH "/gists/$GIST_ID" --input /tmp/gist-payload.json > /dev/null
+          echo 'Gist updated.'
