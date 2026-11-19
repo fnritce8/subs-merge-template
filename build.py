@@ -21,6 +21,16 @@ from repository Secrets / Variables):
   MIN_TOTAL_NODES Minimum total nodes for a build to be published
                   (default 10). A build that fails validation exits
                   non-zero and nothing is published.
+  TEMPLATE_URL    Optional. Use someone else's rule template instead of
+                  the bundled template.json. Two formats are accepted:
+                  (1) a template.json in this project's format;
+                  (2) a complete Clash YAML config — its dns,
+                  rule-providers, rules and proxy-group structure are
+                  reused, while the nodes inside the groups are
+                  refilled with your own (group references are kept,
+                  region groups get region nodes, other groups get
+                  all nodes). If the URL cannot be fetched or parsed,
+                  the bundled template is used and a warning is logged.
 
 Each subscription's last good payload is cached under cache/; a failed
 or suspicious (<5 links) fetch falls back to the cache instead of
@@ -269,20 +279,97 @@ def collect(from_raw=None):
     return proxies, per_sub, regions, labels
 
 
-def build_config(proxies, per_sub, regions, labels):
-    tpl = json.load(open(os.path.join(HERE, 'template.json'), encoding='utf-8'))
+def convert_yaml_template(data, labels):
+    """Turn a complete Clash YAML config into this project's template
+    structure: keep its groups/rules/providers, refill the nodes."""
+    groups_in = data.get('proxy-groups') or []
+    names = {g.get('name') for g in groups_in if isinstance(g, dict)}
+    label_by_box = {f'📦 {l}': l for l in labels}
+    group_tpls = []
+    for g in groups_in:
+        if not isinstance(g, dict) or not g.get('name'):
+            continue
+        name = g['name']
+        gtype = g.get('type', 'select')
+        proxies = g.get('proxies') or []
+        refs = [p for p in proxies if p in names or p in ('DIRECT', 'REJECT')]
+        base = {k: v for k, v in g.items() if k != 'proxies'}
+        if name in label_by_box:
+            group_tpls.append({'def': base, 'fill': 'sub', 'sub': label_by_box[name]})
+            continue
+        if name == 'GLOBAL':
+            prefix = list(refs)
+            if '__SUB_GROUPS__' not in prefix:
+                prefix.append('__SUB_GROUPS__')
+            group_tpls.append({'def': base, 'fill': 'global', 'prefix': prefix})
+            continue
+        region = classify(name)
+        if region and gtype in ('url-test', 'fallback', 'load-balance'):
+            gt = {'def': base, 'fill': 'region', 'region': region}
+        elif proxies and len(refs) == len(proxies):
+            base['proxies'] = proxies
+            group_tpls.append({'def': base, 'fill': 'static'})
+            continue
+        else:
+            gt = {'def': base, 'fill': 'all'}
+        if refs:
+            gt['refs'] = refs
+        group_tpls.append(gt)
+    bundled = json.load(open(os.path.join(HERE, 'template.json'), encoding='utf-8'))
+    tpl = {k: v for k, v in bundled.items() if k != '__groups__'}
+    for k, v in data.items():
+        if k in ('proxies', 'proxy-groups'):
+            continue
+        tpl[k] = v
+    tpl['__groups__'] = group_tpls
+    return tpl
+
+
+def load_template(labels):
+    url = os.environ.get('TEMPLATE_URL', '').strip()
+    bundled_path = os.path.join(HERE, 'template.json')
+    if not url:
+        return json.load(open(bundled_path, encoding='utf-8'))
+    try:
+        text = fetch(url).decode('utf-8', 'replace').strip()
+        if text.startswith('{'):
+            tpl = json.loads(text)
+            if '__groups__' not in tpl:
+                raise ValueError('JSON template has no __groups__')
+            print(f'template: using JSON template from TEMPLATE_URL', file=sys.stderr)
+            return tpl
+        import yaml
+        data = yaml.safe_load(text)
+        if not isinstance(data, dict) or 'proxy-groups' not in data:
+            raise ValueError('YAML template has no proxy-groups')
+        print('template: using YAML config as template from TEMPLATE_URL', file=sys.stderr)
+        return convert_yaml_template(data, labels)
+    except Exception as e:
+        print(f'WARN: TEMPLATE_URL failed ({e}); using bundled template', file=sys.stderr)
+        return json.load(open(bundled_path, encoding='utf-8'))
+
+
+def build_config(proxies, per_sub, regions, labels, tpl):
     group_tpls = tpl.pop('__groups__')
     all_names = [p['name'] for p in proxies]
     sub_group_names = [f'📦 {label}' for label in labels]
+    existing_names = {gt['def'].get('name') for gt in group_tpls}
     groups = []
     sub_groups_inserted = False
+
+    def insert_sub_groups():
+        nonlocal sub_groups_inserted
+        for label in labels:
+            gname = f'📦 {label}'
+            if gname not in existing_names:
+                groups.append({'name': gname, 'type': 'select',
+                               'proxies': per_sub.get(label, [])})
+        sub_groups_inserted = True
+
     for gt in group_tpls:
         if gt['fill'] == 'global':
             if not sub_groups_inserted:
-                for label in labels:
-                    groups.append({'name': f'📦 {label}', 'type': 'select',
-                                   'proxies': per_sub.get(label, [])})
-                sub_groups_inserted = True
+                insert_sub_groups()
             g = dict(gt['def'])
             prefix = []
             for item in gt['prefix']:
@@ -297,16 +384,22 @@ def build_config(proxies, per_sub, regions, labels):
         fill = gt['fill']
         if fill == 'static':
             pass
-        elif fill == 'all':
-            g['proxies'] = all_names
-        elif fill == 'region':
-            g['proxies'] = regions.get(gt['region'], [])
+        elif fill == 'sub':
+            g['proxies'] = per_sub.get(gt['sub'], [])
+        elif fill in ('all', 'region'):
+            filled = all_names if fill == 'all' else regions.get(gt['region'], [])
+            refs = gt.get('refs', [])
+            if refs:
+                merged = list(refs)
+                for n in filled:
+                    if n not in merged:
+                        merged.append(n)
+                g['proxies'] = merged
+            else:
+                g['proxies'] = filled
         groups.append(g)
         if gt['fill'] == 'region' and gt['region'] == '其他-自动':
-            for label in labels:
-                groups.append({'name': f'📦 {label}', 'type': 'select',
-                               'proxies': per_sub.get(label, [])})
-            sub_groups_inserted = True
+            insert_sub_groups()
     cfg = {}
     for k, v in tpl.items():
         cfg[k] = v
@@ -371,7 +464,8 @@ def main():
         raise SystemExit(f'validation failed: subscriptions with 0 nodes: {empty_subs}')
 
     import yaml
-    cfg = build_config(proxies, per_sub, regions, labels)
+    tpl = load_template(labels)
+    cfg = build_config(proxies, per_sub, regions, labels, tpl)
     apply_extra_rules(cfg)
     os.makedirs(args.out, exist_ok=True)
     text = yaml.safe_dump(cfg, allow_unicode=True, sort_keys=False,

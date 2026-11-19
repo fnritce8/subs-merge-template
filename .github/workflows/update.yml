@@ -28,6 +28,7 @@ jobs:
           EXTRA_RULES: ${{ secrets.EXTRA_RULES }}
           EXTRA_LABEL: ${{ vars.EXTRA_LABEL }}
           MIN_TOTAL_NODES: ${{ vars.MIN_TOTAL_NODES }}
+          TEMPLATE_URL: ${{ vars.TEMPLATE_URL }}
         run: python3 build.py
 
       - name: Commit outputs if changed
